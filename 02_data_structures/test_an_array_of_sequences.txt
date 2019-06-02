@@ -1,0 +1,15 @@
+>>> colors = ['black', 'white']
+>>> sizes = ['S', 'M', 'L']
+
+# Use a genexp with a Cartesian product to print out a roster of T-shirts of two colors in three sizes.
+# The six-item list of T-shirts is never built in memory: the generator expression feeds the for loop producing one item at a time
+# If the two lists used in the Cartesian product had 1,000 items each, using a generator expression would save the expense of building a list with a million items just to feed the for loop
+>>> for tshirt in ('%s %s' % (c, s) for c in colors for s in sizes):
+...	print(tshirt)
+black S
+black M
+black L
+white S
+white M
+white L
+
