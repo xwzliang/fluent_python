@@ -1,4 +1,4 @@
-To run: python -m doctest test_card_deck.txt
+To run: python -m doctest card_deck.doctest
 
 >>> from card_deck import *
 
