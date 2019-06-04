@@ -97,3 +97,43 @@ Nested Tuple Unpacking
 Mexico City     |   19.4333 |  -99.1333
 New York-Newark |   40.8086 |  -74.0204
 Sao Paulo       |  -23.5478 |  -46.6358
+
+
+Named Tuples
+
+>>> from collections import namedtuple
+
+# Two parameters are required to create a named tuple: a class name and a list of field names, which can be given as an iterable of strings or as a single space-delimited string
+>>> City = namedtuple('City', 'name country population coordinates')
+
+# Data must be passed as positional arguments to the constructor (in contrast, the tuple constructor takes a single iterable)
+>>> tokyo = City('Tokyo', 'JP', 36.933, (35.689722, 139.691667))
+>>> tokyo
+City(name='Tokyo', country='JP', population=36.933, coordinates=(35.689722, 139.691667))
+
+# You can access the fields by name or position.
+>>> tokyo.population
+36.933
+>>> tokyo.coordinates
+(35.689722, 139.691667)
+>>> tokyo[1]
+'JP'
+
+# _fields is a tuple with the field names of the class
+>>> City._fields
+('name', 'country', 'population', 'coordinates')
+>>> LatLong = namedtuple('LatLong', 'lat long')
+>>> delhi_data = ('Delhi NCR', 'IN', 21.935, LatLong(28.613899, 77.208889))
+
+# _make() allow you to instantiate a named tuple from an iterable; City(*delhi_data) would do the same
+>>> delhi = City._make(delhi_data)
+
+# _asdict() returns a collections.OrderedDict built from the named tuple instance. That can be used to produce a nice display of city data.
+>>> delhi._asdict()
+OrderedDict([('name', 'Delhi NCR'), ('country', 'IN'), ('population', 21.935), ('coordinates', LatLong(lat=28.613899, long=77.208889))])
+>>> for key, value in delhi._asdict().items():
+... 	print(key + ':', value)
+name: Delhi NCR
+country: IN
+population: 21.935
+coordinates: LatLong(lat=28.613899, long=77.208889)
