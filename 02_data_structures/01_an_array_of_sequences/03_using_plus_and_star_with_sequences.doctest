@@ -8,3 +8,42 @@ Usually both operands of + must be of the same sequence type, and neither of the
 [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]
 >>> 5 * 'abcd'
 'abcdabcdabcdabcdabcd'
+
+
+Building Lists of Lists
+
+A list with htree lists of length 3 can represent a tic-tac-toe board
+
+>>> board = [['_'] * 3 for i in range(3)]
+>>> board
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
+>>> board[1][2] = 'X'
+>>> board
+[['_', '_', '_'], ['_', '_', 'X'], ['_', '_', '_']]
+
+A list with three references to the same list is useless
+
+>>> weird_board = [['_'] * 3] * 3	# The outer list is made of three references to the same inner list. While it is unchanged, all seems right
+>>> weird_board
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
+>>> weird_board[1][2] = '0' # Placing a mark in row 1, column 2, reveals that all rows are aliases referring to the same object
+>>> weird_board
+[['_', '_', '0'], ['_', '_', '0'], ['_', '_', '0']]
+
+The problem with example above is that, in essence, it behaves like this code:
+>>> row = ['_'] * 3
+>>> board = []
+>>> for i in range(3):
+... 	board.append(row)	# The same row is appended three times to board
+
+On the other hand, the list comprehension from example above is equivalent to this code:
+>>> board = []
+>>> for i in range(3):
+... 	row = ['_'] * 3	# Each iteration builds a new row and appends it to board
+... 	board.append(row)
+...
+>>> board
+[['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']]
+>>> board[2][0] = 'X'
+>>> board	# Only row 2 is changed, as expected
+[['_', '_', '_'], ['_', '_', '_'], ['X', '_', '_']]
