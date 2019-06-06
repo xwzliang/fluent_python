@@ -1,0 +1,10 @@
+# Using + and * with sequences
+
+
+Usually both operands of + must be of the same sequence type, and neither of them is modified but a new sequence of the same type is created as result of the concatenation.
+
+>>> l = [1, 2, 3]
+>>> l * 5	# A new sequence is created
+[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]
+>>> 5 * 'abcd'
+'abcdabcdabcdabcdabcd'
