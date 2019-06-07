@@ -47,3 +47,55 @@ On the other hand, the list comprehension from example above is equivalent to th
 >>> board[2][0] = 'X'
 >>> board	# Only row 2 is changed, as expected
 [['_', '_', '_'], ['_', '_', '_'], ['X', '_', '_']]
+
+
++= and *=
+
+>>> l = [1, 2, 3]
+>>> id1 = id(l)
+>>> l *= 2
+>>> l
+[1, 2, 3, 1, 2, 3]
+>>> id2 = id(l)
+>>> id1 == id2	# For mutable sequences (list, bytearray, array.array), after multiplacation, the list is the same object, with new items appended
+True
+
+>>> t = (1, 2, 3)
+>>> id1 = id(t)
+>>> t *= 2
+>>> t
+(1, 2, 3, 1, 2, 3)
+>>> id2 = id(t)
+>>> id1 == id2	# For immutable sequences, after multiplacation, a new tuple was created. So repeated concatenation of immutable sequences is inedfficient, because instead of just appending new items, the interpreter has to copy the whole target sequence to create a new one (str is an exception because CPython optimizes for it to support the common usage)
+False
+
+A += Assignment Puzzler
+
+>>> t = (1, 2, [30, 40])
+>>> t[2] += [50, 60]	# t[2].extend([50, 60]) will not generate errors
+Traceback (most recent call last):
+      File "<doctest 03_using_plus_and_star_with_sequences.doctest[32]>", line 1, in <module>
+TypeError: 'tuple' object does not support item assignment
+>>> t
+(1, 2, [30, 40, 50, 60])
+>>> import dis
+>>> dis.dis('s[a] += b')	# doctest: +NORMALIZE_WHITESPACE
+  1           0 LOAD_NAME                0 (s)
+			  2 LOAD_NAME                1 (a)
+			  4 DUP_TOP_TWO
+			  6 BINARY_SUBSCR
+			  8 LOAD_NAME                2 (b)
+			 10 INPLACE_ADD
+			 12 ROT_THREE
+			 14 STORE_SUBSCR
+			 16 LOAD_CONST               0 (None)
+			 18 RETURN_VALUE
+
+What is under the hood:
+			  6 BINARY_SUBSCR	# Put the value of s[a] on TOS (Top Of Stack)
+			 10 INPLACE_ADD		# Perform TOS += b. This succeeds if TOS refers to a mutable object
+			 14 STORE_SUBSCR	# Assign s[a] = TOS. This fails if s is immutable (the t tuple in above example)
+lessons from above:
+- Putting mutable items in tuples is not a good idea
+- Augmented assignment is not an atomic operation - we just saw it throwing exception after doing part of its job
+- Inspecting Python bytecode is not too difficult, and is often helpful to see what is going on under the hood
