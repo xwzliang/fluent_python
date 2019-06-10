@@ -20,3 +20,20 @@ Saving using the pickle module is almost as fast, and pickle handles almost all 
 0.13881319847100515
 >>> floats2 == floats
 True
+
+
+Memory Views
+The built-in memorview class is a shared-memory sequence type that lets you handle slices of arrays without copying bytes.
+
+>>> numbers = array('h', [-2, -1, 0, 1, 2])		# typecode 'h' - short signed integers. Also note that array can be created from any iterable object
+>>> memv = memoryview(numbers)
+>>> len(memv)
+5
+>>> memv[0]		# memv sees the same 5 items in the array
+-2
+>>> memv_oct = memv.cast('B')		# Create mumv_oct by casting the elements of memv to typecode 'B' (unsigned char)
+>>> memv_oct.tolist()		# Export elements as a list, for inspection
+[254, 255, 255, 255, 0, 0, 1, 0, 2, 0]
+>>> memv_oct[5] = 4		# Assign value to byte offset 5
+>>> numbers		# Note change to numbers: a 4 in the most significant byte of 2-byte unsigned integer is 1024
+array('h', [-2, -1, 1024, 1, 2])
