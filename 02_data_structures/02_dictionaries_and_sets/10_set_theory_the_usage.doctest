@@ -1,0 +1,26 @@
+A set is a collection of unique objects. A basic use case is removing duplication:
+
+>>> l = ['spam', 'spam', 'eggs', 'spam']
+>>> set(l) == {'eggs', 'spam'}
+True
+>>> list(set(l)) == ['eggs', 'spam']
+True
+
+Set elements must be hashable. The set type is not hashable, but frozenset, is, so you can have frozenset elements inside a set.
+
+
+Smart use of set operations can reduce both the line count and the runtime of Python programs, at the same time making code easier to read and reason about—by removing loops and lots of conditional logic.
+
+Count occurrences of needles in a haystack, if both are set:
+found = len(needles & haystack)
+
+Without the intersection operator, you'd have write following code to accomplish the same task:
+found = 0
+for n in needles:
+	if n in haystack:
+		found += 1
+
+If you don't have sets on hand, you can always build them on the fly:
+found = len(set(needles) & set(haystack))
+# another way:
+found = len(set(needles).intersection(haystack))
