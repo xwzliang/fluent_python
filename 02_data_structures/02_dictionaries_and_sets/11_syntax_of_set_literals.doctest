@@ -1,0 +1,38 @@
+The syntax of set literals—{1}, {1, 2}, etc.—looks exactly like the math notation, with one important exception: there's no literal notation for the empty set, so we must re‐ member to write set().
+
+>>> s = {1}
+>>> type(s)
+<class 'set'>
+>>> s
+{1}
+>>> s.pop()
+1
+>>> s
+set()
+
+
+Literal set syntax like {1, 2, 3} is both faster and more readable than calling the constructor (e.g., set([1, 2, 3])).
+
+>>> from dis import dis
+
+Dissemble bytecode for expression:
+
+for {1}, special BUILD_LIST bytecode does almost all the work
+>>> dis('{1}') # doctest: +NORMALIZE_WHITESPACE
+      1           0 LOAD_CONST               0 (1)
+                  2 BUILD_SET                1
+                  4 RETURN_VALUE
+
+for set([1]), Three operations instead: LOAD_NAME, BUILD_LIST, and CALL_FUNCTION
+>>> dis('set([1])')	# doctest: +NORMALIZE_WHITESPACE
+      1           0 LOAD_NAME                0 (set)
+                  2 LOAD_CONST               0 (1)
+                  4 BUILD_LIST               1
+                  6 CALL_FUNCTION            1
+                  8 RETURN_VALUE
+
+
+There is no special syntax to represent frozenset literals—they must be created by calling the constructor.
+
+>>> frozenset(range(10))
+frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
