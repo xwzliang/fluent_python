@@ -1,0 +1,16 @@
+Not every byte holds a valid ASCII character, and not every byte sequence is valid UTF-8 or UTF-16; therefore, when you assume one of these encodings while converting a binary sequence to text, you will get a UnicodeDecodeError if unexpected bytes are found.
+On the other hand, many legacy 8-bit encodings like 'cp1252', 'iso8859_1', and 'koi8_r' are able to decode any stream of bytes, including random noise, without generating errors. Therefore, if your program assumes the wrong 8-bit encoding, it will silently decode garbage.
+
+>>> octets = b'Montr\xe9al'	# These bytes are the characters for “Montréal” encoded as latin1; '\xe9' is the byte for “é”
+>>> octets.decode('cp1252')	# Decoding with 'cp1252' (Windows 1252) works because it is a proper superset of latin1
+'Montréal'
+>>> octets.decode('iso8859_7)')	# ISO-8859-7 is intended for Greek, so the '\xe9' byte is misinterpreted, and no error is issued
+'Montrιal'
+>>> octets.decode('koi8_r')	# KOI8-R is for Russian. Now '\xe9' stands for the Cyrillic letter “И”.
+'MontrИal'
+>>> octets.decode('utf_8')	# The 'utf_8' codec detects that octets is not valid UTF-8, and raises UnicodeDecodeError
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 5: invalid continuation byte
+>>> octets.decode('utf_8', errors='replace')	# Using 'replace' error handling, the \xe9 is replaced by “�” (code point U+FFFD), the official Unicode REPLACEMENT CHARACTER intended to represent unknown characters
+'Montr�al'
