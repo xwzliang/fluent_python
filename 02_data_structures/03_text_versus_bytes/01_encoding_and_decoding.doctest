@@ -1,0 +1,12 @@
+Converting from code points to bytes is encoding; converting from bytes to code points is decoding.
+
+>>> s = 'café'
+>>> len(s)
+4
+>>> b = s.encode('utf8')
+>>> b	# bytes literals start with a b prefix
+b'caf\xc3\xa9'
+>>> len(b)	# bytes b has five bytes (the code point for “é” is encoded as two bytes in UTF-8)
+5
+>>> b.decode('utf8')
+'café'
