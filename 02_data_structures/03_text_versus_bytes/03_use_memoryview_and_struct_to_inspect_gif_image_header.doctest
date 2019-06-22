@@ -1,0 +1,14 @@
+>>> import struct
+>>> fmt = '<3s3sHH'	# struct format: < little-endian; 3s3s two sequences of 3 bytes; HH two 16-bit integers
+>>> with open('../../downloads/sample.gif', 'rb') as fp:
+... 	img = memoryview(fp.read())	# Create memoryview from file contents in memory
+...
+>>> header = img[:10]	# another memoryview by slicing the first one; no bytes are copied here
+>>> bytes(header)	# Convert to bytes for display only; 10 bytes are copied here
+b'GIF89a \x03X\x02'
+>>> struct.unpack(fmt, header)	# Unpack memoryview into tuple of: type, version, width, and height
+(b'GIF', b'89a', 800, 600)
+>>> del header	# Delete references to release the memory associated with the memoryview instances
+>>> del img
+
+Note: Slicing a memoryview returns a new memoryview, without copying bytes. Even less byte copying would happen if using the mmap module to open the image as a memory-mapped file.
