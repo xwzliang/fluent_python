@@ -1,0 +1,28 @@
+Each item in bytes or bytearray is an integer from 0 to 255, and not a one-character string like in the Python 2 str. However, a slice of a binary sequence always produces a binary sequence of the same type—including slices of length 1.
+
+>>> cafe = bytes('café', encoding='utf_8')	# bytes can be built from a str, given an encoding
+>>> cafe
+b'caf\xc3\xa9'
+>>> cafe[0]	# Each item is an integer in range(256)
+99
+>>> cafe[:1]	# Slices of bytes are also bytes - even slices of a single byte
+b'c'
+>>> cafe_arr = bytearray(cafe)
+>>> cafe_arr	# There is no literal syntax for bytearray: they are shown as bytearray() with a bytes literal as argument
+bytearray(b'caf\xc3\xa9')
+>>> cafe_arr[-1:]	# A slice of bytearray is also a bytearray
+bytearray(b'\xa9')
+
+The fact that my_bytes[0] retrieves an int but my_bytes[:1] returns a bytes object of length 1 should not be surprising. The only sequence type where s[0] == s[:1] is the str type. Al‐ though practical, this behavior of str is exceptional. For every other sequence, s[i] returns one item, and s[i:i+1] returns a sequence of the same type with the s[1] item inside it.
+
+
+Other ways to build bytes or bytearray:
+
+>>> bytes.fromhex('31 4B CE A9')	# Binary sequences have a class that str doesn't have, called fromhex, which builds a binary sequence by parsing pairs of hex digits optionally separated by spaces
+b'1K\xce\xa9'
+
+>>> import array
+>>> numbers = array.array('h', [-2, -1, 0, 1, 2])	# Typecode 'h' creates an array of short integers (16 bits)
+>>> octets = bytes(numbers)	# octets holds a copy of the bytes that make up numbers
+>>> octets	# These are the 10 bytes that represent the five short integers
+b'\xfe\xff\xff\xff\x00\x00\x01\x00\x02\x00'
