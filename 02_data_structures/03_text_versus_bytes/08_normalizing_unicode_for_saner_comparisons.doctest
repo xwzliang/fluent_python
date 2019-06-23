@@ -1,0 +1,67 @@
+String comparisons are complicated by the fact that Unicode has combining characters: diacritics and other marks that attach to the preceding character, appearing as one when printed.
+
+For example, the word “café” may be composed in two ways, using four or five code points, but the result looks exactly the same:
+
+>>> s1 = 'café'
+>>> s2 = 'cafe\u0301'	# The code point U+0301 is the COMBINING ACUTE ACCENT. Using it after "e" renders "é"
+>>> s1, s2
+('café', 'café')
+>>> len(s1), len(s2)
+(4, 5)
+>>> s1 == s2
+False
+
+
+The solution is to use Unicode normalization, provided by the unicodedata.normal ize function. The first argument to that function is one of four strings: 'NFC', 'NFD', 'NFKC', and 'NFKD'.
+Normalization Form C (NFC) composes the code points to produce the shortest equiv‐ alent string, while NFD decomposes, expanding composed characters into base char‐ acters and separate combining characters.
+
+>>> from unicodedata import normalize
+>>> s1 = 'café'	# composed "e" with acute accent
+>>> s2 = 'cafe\u0301'	# decomposed "e" and acute accent
+>>> len(s1), len(s2)
+(4, 5)
+>>> len(normalize('NFC', s1)), len(normalize('NFC', s2))
+(4, 4)
+>>> len(normalize('NFD', s1)), len(normalize('NFD', s2))
+(5, 5)
+>>> normalize('NFC', s1) == normalize('NFC', s2)
+True
+>>> normalize('NFD', s1) == normalize('NFD', s2)
+True
+
+Some single characters are normalized by NFC into another single character. The sym‐ bol for the ohm (Ω) unit of electrical resistance is normalized to the Greek uppercase omega. They are visually identical, but they compare unequal so it is essential to nor‐ malize to avoid surprises:
+
+>>> from unicodedata import normalize, name
+>>> ohm = '\u2126'
+>>> name(ohm)
+'OHM SIGN'
+>>> ohm_c = normalize('NFC', ohm)
+>>> name(ohm_c)
+'GREEK CAPITAL LETTER OMEGA'
+>>> ohm == ohm_c
+False
+>>> normalize('NFC', ohm) == normalize('NFC', ohm_c)
+True
+>>> normalize('NFC', ohm) == ohm_c
+True
+
+
+In the acronyms for the other two normalization forms—NFKC and NFKD—the letter K stands for “compatibility. ” In the NFKC and NFKD forms, each compatibility character is replaced by a “compatibility decomposition” of one or more characters that are considered a “preferred” representation, even if there is some formatting loss
+
+>>> from unicodedata import normalize, name
+>>> half = '½'
+>>> normalize('NFKC', half)
+'1⁄2'
+>>> four_squared = '4²'
+>>> normalize('NFKC', four_squared)
+'42'
+>>> micro = 'µ'
+>>> micro_kc = normalize('NFKC', micro)
+>>> micro, micro_kc
+('µ', 'μ')
+>>> ord(micro), ord(micro_kc)
+(181, 956)
+>>> name(micro), name(micro_kc)
+('MICRO SIGN', 'GREEK SMALL LETTER MU')
+
+NFKC and NFKD normalization should be applied with care and only in special cases—e.g., search and indexing—and not for permanent storage, because these transformations cause data loss.
