@@ -1,0 +1,17 @@
+A couple of extra bytes at the begging of a UTF-16 encoded sequence is a BOM -- byte-order mark
+
+>>> u16 = 'El Niño'.encode('utf_16')
+>>> u16
+b'\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'
+>>> list(u16)	# b'\xff\xfe' (decimal 255, 254) is the BOM. To avoid confusion, the UTF-16 encoding prepends the text to be encoded with special character ZERO WIDTH NO-BREAK SPACE(U+FEFF), which is in visible. On a little-endian system, that is encoded as b'\xff\xfe'
+[255, 254, 69, 0, 108, 0, 32, 0, 78, 0, 105, 0, 241, 0, 111, 0]
+
+UTF16-LE and UTF-16BE is explicitly little-endian and explicitly big-endian, if you use them, BOM is not generated
+>>> u16le = 'El Niño'.encode('utf_16le')
+>>> list(u16le)
+[69, 0, 108, 0, 32, 0, 78, 0, 105, 0, 241, 0, 111, 0]
+>>> u16be = 'El Niño'.encode('utf_16be')
+>>> list(u16be)
+[0, 69, 0, 108, 0, 32, 0, 78, 0, 105, 0, 241, 0, 111]
+
+One big advantage of UTF-8 is that it produces the same byte sequence regardless of machine endianness, so no BOM is needed. Nevertheless, some Windows applications (notably Notepad) add the BOM to UTF-8 files anyway.
