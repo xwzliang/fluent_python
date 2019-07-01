@@ -1,0 +1,26 @@
+Functions in Python are first-class objects. Programming language theorists define a “first-class object” as a program entity that can be:
+- Created at runtime 
+- Assigned to a variable or element in a data structure 
+- Passed as an argument to a function 
+- Returned as the result of a function
+
+>>> def factorial(n):	# This is a console session, so we're creating a function in "runtime"
+... 	'''returns n!'''
+... 	return 1 if n < 2 else n * factorial(n-1)
+...
+>>> factorial(42)
+1405006117752879898543142606244511569936384000000000
+>>> factorial.__doc__	# __doc__ is one of several attributes of function objects
+'returns n!'
+>>> type(factorial)	# factorial is an instance of the function class
+<class 'function'>
+
+>>> fact = factorial	# We can assign factorial to a variable fact and call it through that name
+>>> fact	# doctest: +ELLIPSIS
+<function factorial at 0x...>
+>>> fact(5)
+120
+>>> map(factorial, range(11))	# doctest: +ELLIPSIS
+<map object at 0x...>
+>>> list(map(fact, range(11)))	# We can pass factorial as an argument to map function
+[1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]
