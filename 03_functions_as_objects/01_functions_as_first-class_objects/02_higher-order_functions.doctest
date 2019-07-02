@@ -1,0 +1,20 @@
+A function that takes a function as argument or returns a function as the result is a higher-order function
+
+Sorting a list of words by length:
+>>> fruits = ['strawberry', 'fig', 'apple', 'cherry', 'raspberry', 'banana']
+>>> sorted(fruits, key=len)	# Pass the len function as the key
+['fig', 'apple', 'cherry', 'banana', 'raspberry', 'strawberry']
+
+
+Any one-argument function can be used as the key. For example, to create a rhyme dictionary it might be useful to sort each word spelled backward.
+Sorting a list of words by their reversed spelling
+>>> def reverse(word):
+... 	return word[::-1]
+>>> reverse('testing')
+'gnitset'
+>>> sorted(fruits, key=reverse)
+['banana', 'apple', 'fig', 'raspberry', 'strawberry', 'cherry']
+
+
+In the functional programming paradigm, some of the best known higher-order functions are map, filter, reduce, and apply. The apply function was deprecated in Python 2.3 and removed in Python 3 because it's no longer necessary. If you need to call a function with a dynamic set of arguments, you can just write fn(*args, **keywords) instead of apply(fn, args, kwargs).
+The *args will give you all function parameters as a tuple, The **kwargs will give you all keyword arguments except for those corresponding to a formal parameter as a dictionary.
