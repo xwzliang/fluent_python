@@ -1,0 +1,27 @@
+The map and filter functions are still built-ins in Python 3, but since the introduction of list comprehensions and generator expressions, they are not as important. A listcomp or a genexp does the job of map and filter combined, but is more readable.
+
+Lists of factorials produced with map and filter compared to alternatives coded as list comprehensions:
+
+>>> from math import factorial
+>>> list(map(factorial, range(6)))
+[1, 1, 2, 6, 24, 120]
+>>> [factorial(n) for n in range(6)]
+[1, 1, 2, 6, 24, 120]
+>>> list(map(factorial, filter(lambda n: n % 2, range(6))))
+[1, 6, 120]
+>>> [factorial(n) for n in range(6) if n % 2]
+[1, 6, 120]
+
+
+The reduce function was demoted from a built-in in Python 2 to the functools module in Python 3. Its most common use case, summation, is better served by the sum built-in available since Python 2.3 was released in 2003. This is a big win in terms of readability and performance
+
+Sum of integers up to 99 performed with reduce and sum
+
+>>> from functools import reduce
+>>> from operator import add
+>>> reduce(lambda x, y: x + y, range(100))
+4950
+>>> reduce(add, range(100))	# Import add to avoid creating a function just to add two numbers
+4950
+>>> sum(range(100))	# Same task using sum; import or adding function not needed
+4950
