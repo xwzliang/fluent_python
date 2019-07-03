@@ -1,0 +1,21 @@
+Given the variety of existing callable types in Python, the safest way to determine whether an object is callable is to use the callable() built-in:
+
+>>> abs, str, 13
+(<built-in function abs>, <class 'str'>, 13)
+>>> [callable(obj) for obj in (abs, str, 13)]
+[True, True, False]
+
+
+The Python Data Model documentation lists seven callable types: User-defined functions Created with def statements or lambda expressions.
+
+- Built-in functions A function implemented in C (for CPython), like len or time.strftime.
+
+- Built-in methods Methods implemented in C, like dict.get.
+
+- Methods Functions defined in the body of a class.
+
+- Classes When invoked, a class runs its __new__ method to create an instance, then __in it__ to initialize it, and finally the instance is returned to the caller. Because there is no new operator in Python, calling a class is like calling a function. (Usually calling a class creates an instance of the same class, but other behaviors are possible by overriding __new__.)
+
+- Class instances If a class defines a __call__ method, then its instances may be invoked as functions.
+
+- Generator functions Functions or methods that use the yield keyword. When called, generator functions return a generator object.
