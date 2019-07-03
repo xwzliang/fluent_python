@@ -1,0 +1,11 @@
+To use a higher-order function, sometimes it is convenient to create a small, one-off function. That is why anonymous functions exist.
+
+Sorting a list of words by their reversed spelling using lambda
+
+>>> fruits = ['strawberry', 'fig', 'apple', 'cherry', 'raspberry', 'banana']
+>>> sorted(fruits, key=lambda word: word[::-1])
+['banana', 'apple', 'fig', 'raspberry', 'strawberry', 'cherry']
+
+
+This function can have any number of arguments but only one expression, which is evaluated and returned.
+Outside the limited context of arguments to higher-order functions, anonymous functions are rarely useful in Python. The syntactic restrictions tend to make nontrivial lambdas either unreadable or unworkable.
