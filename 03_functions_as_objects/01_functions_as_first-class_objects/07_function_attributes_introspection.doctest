@@ -1,0 +1,27 @@
+Function objects have many attributes beyond __doc__, use dir function to inspect:
+
+>>> def factorial(n):	# This is a console session, so we're creating a function in "runtime"
+... 	'''returns n!'''
+... 	return 1 if n < 2 else n * factorial(n-1)
+>>> dir(factorial)
+['__annotations__', '__call__', '__class__', '__closure__', '__code__', '__defaults__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__get__', '__getattribute__', '__globals__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__kwdefaults__', '__le__', '__lt__', '__module__', '__name__', '__ne__', '__new__', '__qualname__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__']
+
+
+Like the instances of a plain user-defined class, a function uses the __dict__ attribute to store user attributes assigned to it. This is useful as a primitive form of annotation. Assigning arbitrary attributes to functions is not a very common practice in general, but Django is one framework that uses it. See, for example, the short_description, boolean, and allow_tags attributes described in The Django admin site documentation. In the Django docs, this example shows attaching a short_description to a method, to determine the description that will appear in record listings in the Django admin when that method is used:
+
+>>> def upper_case_name(obj):
+... 	return ("%s %s" % (obj.first_name, obj.last_name)).upper()
+>>> upper_case_name.short_description = 'Customer name'
+>>> upper_case_name.__dict__
+{'short_description': 'Customer name'}
+
+
+The attributes that are specific to functions and are not found in a generic Python user-defined object:
+
+>>> class C: pass	# Create bare user-defined class
+>>> obj = C()
+>>> def func(): pass	# Create a bare function
+>>> sorted(set(dir(func)) - set(dir(obj)))	# Using set difference, generate a sorted list of the attributes that exist in a function but not in an instance of a bare class
+['__annotations__', '__call__', '__closure__', '__code__', '__defaults__', '__get__', '__globals__', '__kwdefaults__', '__name__', '__qualname__']
+
+The __defaults__, __code__, and __annotations__ functions, used by IDEs and frameworks to extract information about function signatures
