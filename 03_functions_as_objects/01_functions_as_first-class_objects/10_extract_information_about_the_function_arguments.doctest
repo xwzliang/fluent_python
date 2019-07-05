@@ -1,0 +1,52 @@
+Within a function object, the __defaults__ attribute holds a tuple with the default values of positional and keyword arguments. The defaults for keyword-only arguments appear in __kwdefaults__. The names of the arguments, however, are found within the __code__ attribute, which is a reference to a code object with many attributes of its own.
+
+Following example shows the values of __defaults__, __code__.co_varnames, and __code__.co_argcount for the clip function:
+
+>>> clip_module = __import__('09_function_to_shorten_string_by_clipping_at_a_space_near_the_desired_length')	# This is a workaround because direct import module with name starting with numbers will get syntax error: invalid token
+>>> clip = clip_module.clip
+>>> clip.__defaults__
+(80,)
+>>> clip.__code__	# doctest: +ELLIPSIS
+<code object clip at 0x...>
+>>> clip.__code__.co_varnames
+('text', 'max_len', 'end', 'space_before', 'space_after')
+>>> clip.__code__.co_argcount
+2
+
+
+This is awkward. There is a better way to retrieve information about function arguments using the inspect module
+
+>>> from inspect import signature
+>>> sig = signature(clip)
+>>> sig	
+<Signature (text, max_len=80)>
+>>> str(sig)
+'(text, max_len=80)'
+>>> for name, param in sig.parameters.items():
+... 	print(param.kind, ':', name, '=', param.default)
+POSITIONAL_OR_KEYWORD : text = <class 'inspect._empty'>
+POSITIONAL_OR_KEYWORD : max_len = 80
+
+This is much better. inspect.signature returns a Signature object, which has a parameters attribute that lets you read an ordered mapping of names to inspect.Parameter objects. Each Parameter instance has attributes such as name, default, and kind. The special value inspect._empty denotes parameters with no default, which makes sense considering that None is a valid—and popular—default value.
+
+
+An inspect.Signature object has a bind method that takes any number of arguments and binds them to the parameters in the signature, applying the usual rules for matching actual arguments to formal parameters. This can be used by a framework to validate arguments prior to the actual function invocation.
+
+>>> import inspect
+>>> tag = __import__('08_from_positional_to_keyword-only_arguments_example_generate_HTML_tags').tag
+>>> sig = inspect.signature(tag)
+>>> my_tag = {'name': 'img', 'title': 'Sunset Boulevard',
+... 		  'src': 'sunset.jpg', 'cls': 'framed'}
+>>> bound_args = sig.bind(**my_tag)	# Pass a dict of arguments to .bind()
+>>> bound_args
+<BoundArguments (name='img', cls='framed', attrs={'title': 'Sunset Boulevard', 'src': 'sunset.jpg'})>
+>>> for name, value in bound_args.arguments.items():
+... 	print(name, '=', value)
+name = img
+cls = framed
+attrs = {'title': 'Sunset Boulevard', 'src': 'sunset.jpg'}
+>>> del my_tag['name']	# Remove the mandatory argument name from my_tag
+>>> bound_args = sig.bind(**my_tag)	# Will raise a TypeError complaining of the missing name argument
+Traceback (most recent call last):
+...
+TypeError: missing a required argument: 'name'
