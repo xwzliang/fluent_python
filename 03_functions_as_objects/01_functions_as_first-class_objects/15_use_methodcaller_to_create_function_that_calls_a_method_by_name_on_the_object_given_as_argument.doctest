@@ -1,0 +1,15 @@
+>>> from operator import methodcaller
+>>> s = 'The time has come'
+>>> upcase = methodcaller('upper')
+>>> upcase(s)
+'THE TIME HAS COME'
+>>> hiphenate = methodcaller('replace', ' ', '-')
+>>> hiphenate(s)
+'The-time-has-come'
+
+
+The first test in Example is there just to show methodcaller at work, but if you need to use the str.upper as a function, you can just call it on the str class and pass a string as argument, like this:
+>>> str.upper(s) 
+'THE TIME HAS COME'
+
+The second test in Example shows that methodcaller can also do a partial application to freeze some arguments, like the functools.partial function does.
