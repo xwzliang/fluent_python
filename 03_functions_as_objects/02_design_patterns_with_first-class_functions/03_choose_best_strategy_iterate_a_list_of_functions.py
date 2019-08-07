@@ -1,10 +1,11 @@
 moduleName = "02_commercial_order_class_with_discount_strategies_implemented_as_functions"
 # __import__(moduleName, globals(), locals(), ['*'])
 
-# Import all from module
+# Import all from module except __name__
 module = __import__(moduleName, globals(), locals(), ['*'])
 for k in dir(module):
-    locals()[k] = getattr(module, k)
+    if k != '__name__':
+        locals()[k] = getattr(module, k)
 
 
 promos = [fidelity_promo, bulk_item_promo, large_order_promo]
@@ -16,11 +17,6 @@ def best_promo(order):
 
 class test_best_promo:
     """
-# >>> moduleName = "02_commercial_order_class_with_discount_strategies_implemented_as_functions"
-# >>> module = __import__(moduleName, globals(), locals(), ['*'])
-# >>> for k in dir(module):
-# ... 	locals()[k] = getattr(module, k)
-
     >>> joe = Customer('John Doe', 0)
     >>> ann = Customer('Ann Smith', 1100)
     >>> cart = [LineItem('banana', 4, .5),
