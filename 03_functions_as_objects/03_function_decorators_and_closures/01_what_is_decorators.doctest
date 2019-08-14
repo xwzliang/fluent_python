@@ -1,0 +1,37 @@
+A decorator is a callable that takes another function as argument (the decorated function). The decorator may perform some processing with the decorated function, and returns it or replaces it with another function or callable object.
+
+In other words, assuming an existing decorator named decorate, this code:
+
+@decorate 
+def target():    
+	print('running target()')
+
+Has the same effect as writing this:
+
+def target():    
+	print('running target()')
+target = decorate(target)
+
+The end result is the same: at the end of either of these snippets, the target name does not necessarily refer to the original target function, but to whatever function is returned by decorate(target).
+
+
+Example: A decorator usually replaces a function with a different one
+
+>>> def deco(func):
+... 	def inner():
+...			print('running inner()')
+... 	return inner
+
+>>> @deco
+... def target():
+... 	print('running target()')
+
+>>> target()	# Invoking the decorated target actually runs inner
+running inner()
+
+# Inspection reveals that target is now a reference to inner
+>>> target		# doctest: +ELLIPSIS
+<function deco.<locals>.inner at 0x...>
+
+
+To summarize: the first crucial fact about decorators is that they have the power to replace the decorated function with a different one. The second crucial fact is that they are executed immediately when a module is loaded. This is explained next.
