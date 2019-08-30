@@ -1,0 +1,36 @@
+
+>>> def f1(a):
+... 	print(a)
+... 	print(b)
+>>> f1(3)
+Traceback (most recent call last):
+...
+NameError: name 'b' is not defined
+
+>>> b = 6	# b is global
+>>> f1(3)
+3
+6
+
+
+>>> b = 6
+>>> def f2(a):
+... 	print(a)
+... 	print(b)
+... 	b = 9	# If assigned in function, b will become local, so this will get error "referenced before assignment"
+>>> f2(3)
+Traceback (most recent call last):
+...
+UnboundLocalError: local variable 'b' referenced before assignment
+
+
+>>> def f3(a):
+... 	global b	# global declaration will make b as a global variable, so print b will return 6 which is assigned globally
+... 	print(a)
+... 	print(b)
+... 	b = 9
+>>> f3(3)
+3
+6
+>>> b
+9
