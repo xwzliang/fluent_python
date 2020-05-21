@@ -47,7 +47,7 @@ ESP
 >>> a, b
 (3, 1)
 
-# Another wxample of tuple unpacking is prefixing an argument with a star whencalling a function
+# Another example of tuple unpacking is prefixing an argument with a star whencalling a function
 >>> divmod(20, 8)
 (2, 4)
 >>> t = (20, 8)
@@ -129,8 +129,11 @@ City(name='Tokyo', country='JP', population=36.933, coordinates=(35.689722, 139.
 >>> delhi = City._make(delhi_data)
 
 # _asdict() returns a collections.OrderedDict built from the named tuple instance. That can be used to produce a nice display of city data.
+# >>> delhi._asdict()
+# OrderedDict([('name', 'Delhi NCR'), ('country', 'IN'), ('population', 21.935), ('coordinates', LatLong(lat=28.613899, long=77.208889))])
+# Changed in version 3.8: Returns a regular dict instead of an OrderedDict
 >>> delhi._asdict()
-OrderedDict([('name', 'Delhi NCR'), ('country', 'IN'), ('population', 21.935), ('coordinates', LatLong(lat=28.613899, long=77.208889))])
+{'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': LatLong(lat=28.613899, long=77.208889)}
 >>> for key, value in delhi._asdict().items():
 ... 	print(key + ':', value)
 name: Delhi NCR

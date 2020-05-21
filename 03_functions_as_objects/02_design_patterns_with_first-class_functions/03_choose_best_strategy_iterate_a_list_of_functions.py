@@ -1,14 +1,17 @@
-moduleName = "02_commercial_order_class_with_discount_strategies_implemented_as_functions"
+moduleName = (
+    "02_commercial_order_class_with_discount_strategies_implemented_as_functions"
+)
 # __import__(moduleName, globals(), locals(), ['*'])
 
 # Import all from module except __name__
-module = __import__(moduleName, globals(), locals(), ['*'])
+module = __import__(moduleName, globals(), locals(), ["*"])
 for k in dir(module):
-    if k != '__name__':
+    if k != "__name__":
         locals()[k] = getattr(module, k)
 
 
 promos = [fidelity_promo, bulk_item_promo, large_order_promo]
+
 
 def best_promo(order):
     """Select best discount available"""
@@ -36,7 +39,7 @@ class test_best_promo:
     <Order total: 10.00 due: 9.30>
 
     test for best_promo
-    >>> Order(joe, cart, large_order_promo)
+    >>> Order(joe, cart, best_promo)
     <Order total: 42.00 due: 42.00>
     >>> Order(joe, long_order, best_promo)
     <Order total: 10.00 due: 9.30>
@@ -45,9 +48,11 @@ class test_best_promo:
     >>> Order(ann, cart, best_promo)
     <Order total: 42.00 due: 39.90>
     """
+
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

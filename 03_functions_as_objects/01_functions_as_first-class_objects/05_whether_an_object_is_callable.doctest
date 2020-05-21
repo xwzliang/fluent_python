@@ -14,7 +14,7 @@ The Python Data Model documentation lists seven callable types: User-defined fun
 
 - Methods Functions defined in the body of a class.
 
-- Classes When invoked, a class runs its __new__ method to create an instance, then __in it__ to initialize it, and finally the instance is returned to the caller. Because there is no new operator in Python, calling a class is like calling a function. (Usually calling a class creates an instance of the same class, but other behaviors are possible by overriding __new__.)
+- Classes When invoked, a class runs its __new__ method to create an instance, then __init__ to initialize it, and finally the instance is returned to the caller. Because there is no new operator in Python, calling a class is like calling a function. (Usually calling a class creates an instance of the same class, but other behaviors are possible by overriding __new__.)
 
 - Class instances If a class defines a __call__ method, then its instances may be invoked as functions.
 

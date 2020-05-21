@@ -1,4 +1,4 @@
-A sibling of itemgetter is attrgetter, which creates functions to extract object at‐ tributes by name. If you pass attrgetter several attribute names as arguments, it also returns a tuple of values. In addition, if any argument name contains a . (dot), attrget ter navigates through nested objects to retrieve the attribute.
+A sibling of itemgetter is attrgetter, which creates functions to extract object attributes by name. If you pass attrgetter several attribute names as arguments, it also returns a tuple of values. In addition, if any argument name contains a . (dot), attrgetter navigates through nested objects to retrieve the attribute.
 
 >>> metro_data = [ 
 ...     ('Tokyo', 'JP', 36.933, (35.689722, 139.691667)), 

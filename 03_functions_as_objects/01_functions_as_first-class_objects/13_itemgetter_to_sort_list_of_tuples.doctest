@@ -30,4 +30,4 @@ If you pass multiple index arguments to itemgetter, the function it builds will 
 ('BR', 'Sao Paulo')
 
 
-Because itemgetter uses the [] operator, it supports not only sequences but also map‐ pings and any class that implements __getitem__.
+Because itemgetter uses the [] operator, it supports not only sequences but also mappings and any class that implements __getitem__.
