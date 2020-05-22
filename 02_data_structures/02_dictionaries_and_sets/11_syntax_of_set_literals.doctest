@@ -1,4 +1,4 @@
-The syntax of set literals—{1}, {1, 2}, etc.—looks exactly like the math notation, with one important exception: there's no literal notation for the empty set, so we must re‐ member to write set().
+The syntax of set literals—{1}, {1, 2}, etc.—looks exactly like the math notation, with one important exception: there's no literal notation for the empty set, so we must remember to write set().
 
 >>> s = {1}
 >>> type(s)
@@ -17,7 +17,7 @@ Literal set syntax like {1, 2, 3} is both faster and more readable than calling 
 
 Dissemble bytecode for expression:
 
-for {1}, special BUILD_LIST bytecode does almost all the work
+for {1}, special BUILD_SET bytecode does almost all the work
 >>> dis('{1}') # doctest: +NORMALIZE_WHITESPACE
       1           0 LOAD_CONST               0 (1)
                   2 BUILD_SET                1

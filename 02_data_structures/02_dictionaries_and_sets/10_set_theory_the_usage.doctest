@@ -3,7 +3,14 @@ A set is a collection of unique objects. A basic use case is removing duplicatio
 >>> l = ['spam', 'spam', 'eggs', 'spam']
 >>> set(l) == {'eggs', 'spam'}
 True
->>> list(set(l)) == ['eggs', 'spam']
+
+The items in set are not ordered, so the following is True also
+>>> set(l) == {'spam', 'eggs'}
+True
+
+# >>> list(set(l)) == ['eggs', 'spam']
+List items are ordered, when use list() to convert, the above result sometimes is True, sometimes False
+>>> sorted(list(set(l))) == ['eggs', 'spam']
 True
 
 Set elements must be hashable. The set type is not hashable, but frozenset, is, so you can have frozenset elements inside a set.
@@ -17,8 +24,8 @@ found = len(needles & haystack)
 Without the intersection operator, you'd have write following code to accomplish the same task:
 found = 0
 for n in needles:
-	if n in haystack:
-		found += 1
+    if n in haystack:
+        found += 1
 
 If you don't have sets on hand, you can always build them on the fly:
 found = len(set(needles) & set(haystack))

@@ -13,7 +13,7 @@ bytearray(b'caf\xc3\xa9')
 >>> cafe_arr[-1:]	# A slice of bytearray is also a bytearray
 bytearray(b'\xa9')
 
-The fact that my_bytes[0] retrieves an int but my_bytes[:1] returns a bytes object of length 1 should not be surprising. The only sequence type where s[0] == s[:1] is the str type. Al‐ though practical, this behavior of str is exceptional. For every other sequence, s[i] returns one item, and s[i:i+1] returns a sequence of the same type with the s[1] item inside it.
+The fact that my_bytes[0] retrieves an int but my_bytes[:1] returns a bytes object of length 1 should not be surprising. The only sequence type where s[0] == s[:1] is the str type. Although practical, this behavior of str is exceptional. For every other sequence, s[i] returns one item, and s[i:i+1] returns a sequence of the same type with the s[1] item inside it.
 
 
 Other ways to build bytes or bytearray:
