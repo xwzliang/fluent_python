@@ -12,8 +12,8 @@ For example, the word “café” may be composed in two ways, using four or fiv
 False
 
 
-The solution is to use Unicode normalization, provided by the unicodedata.normal ize function. The first argument to that function is one of four strings: 'NFC', 'NFD', 'NFKC', and 'NFKD'.
-Normalization Form C (NFC) composes the code points to produce the shortest equiv‐ alent string, while NFD decomposes, expanding composed characters into base char‐ acters and separate combining characters.
+The solution is to use Unicode normalization, provided by the unicodedata.normalize function. The first argument to that function is one of four strings: 'NFC', 'NFD', 'NFKC', and 'NFKD'.
+Normalization Form C (NFC) composes the code points to produce the shortest equivalent string, while NFD decomposes, expanding composed characters into base characters and separate combining characters.
 
 >>> from unicodedata import normalize
 >>> s1 = 'café'	# composed "e" with acute accent
@@ -29,7 +29,7 @@ True
 >>> normalize('NFD', s1) == normalize('NFD', s2)
 True
 
-Some single characters are normalized by NFC into another single character. The sym‐ bol for the ohm (Ω) unit of electrical resistance is normalized to the Greek uppercase omega. They are visually identical, but they compare unequal so it is essential to nor‐ malize to avoid surprises:
+Some single characters are normalized by NFC into another single character. The symbol for the ohm (Ω) unit of electrical resistance is normalized to the Greek uppercase omega. They are visually identical, but they compare unequal so it is essential to normalize to avoid surprises:
 
 >>> from unicodedata import normalize, name
 >>> ohm = '\u2126'
