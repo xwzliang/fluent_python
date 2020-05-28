@@ -1,0 +1,57 @@
+A very practical decorator is functools.lru_cache. It implements memoization: an optimization technique that works by saving the results of previous invocations of an expensive function, avoiding repeat computations on previously used arguments. The letters LRU stand for Least Recently Used, meaning that the growth of the cache is limited by discarding the entries that have not been read for a while.
+
+>>> clock_module = __import__('07_clock_decorator_to_time_running_time_of_functions')
+
+>>> @clock_module.clock
+... def fibonacci(n):
+...     if n < 2:
+...         return n
+...     return fibonacci(n-2) + fibonacci(n-1)
+
+The waste is obvious: fibonacci(1) is called five times, fibonacci(2) three times, etc.
+>>> fibonacci(5)  # doctest: +ELLIPSIS
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(0) -> 0
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(2) -> 1
+[...s] fibonacci(3) -> 2
+[...s] fibonacci(0) -> 0
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(2) -> 1
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(0) -> 0
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(2) -> 1
+[...s] fibonacci(3) -> 2
+[...s] fibonacci(4) -> 3
+[...s] fibonacci(5) -> 5
+5
+
+But if we just add two lines to use lru_cache, performance is much improved. 
+>>> import functools
+
+Note that lru_cache must be invoked as a regular function—note the parentheses in the line: @functools.lru_cache(). The reason is that it accepts configuration parameters
+This is an example of stacked decorators: @lru_cache() is applied on the function returned by @clock.
+>>> @functools.lru_cache()
+... @clock_module.clock
+... def fibonacci(n):
+...     if n < 2:
+...         return n
+...     return fibonacci(n-2) + fibonacci(n-1)
+>>> fibonacci(5)  # doctest: +ELLIPSIS
+[...s] fibonacci(1) -> 1
+[...s] fibonacci(0) -> 0
+[...s] fibonacci(2) -> 1
+[...s] fibonacci(3) -> 2
+[...s] fibonacci(4) -> 3
+[...s] fibonacci(5) -> 5
+5
+
+Besides making silly recursive algorithms viable, lru_cache really
+shines in applications that need to fetch information from the Web.
+
+It's important to note that lru_cache can be tuned by passing two optional arguments. Its full signature is:
+
+functools.lru_cache(maxsize=128, typed=False)
+
+The maxsize argument determines how many call results are stored. After the cache is full, older results are discarded to make room. For optimal performance, maxsize should be a power of 2. The typed argument, if set to True, stores results of different argument types separately, i.e., distinguishing between float and integer arguments that are nor‐ mally considered equal, like 1 and 1.0. By the way, because lru_cache uses a dict to store the results, and the keys are made from the positional and keyword arguments used in the calls, all the arguments taken by the decorated function must be hashable.
