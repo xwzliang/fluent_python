@@ -1,0 +1,10 @@
+Variables are labels, sticky notes attached to objects
+
+Variables a and b hold references to the same list, not copies of the list
+>>> a = [1, 2, 3]
+>>> b = a
+>>> a.append(4)
+>>> b
+[1, 2, 3, 4]
+
+With reference variables, it makes much more sense to say that the variable is assigned to an object, and not the other way around. After all, the object is created before the assignment.
