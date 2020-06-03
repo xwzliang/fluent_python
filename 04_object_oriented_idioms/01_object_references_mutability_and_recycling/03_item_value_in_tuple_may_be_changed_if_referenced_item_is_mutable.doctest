@@ -1,0 +1,22 @@
+Tuples, like most Python collections—lists, dicts, sets, etc.—hold
+references to objects. If the referenced items are mutable, they may
+change even if the tuple itself does not. In other words, the
+immutability of tuples really refers to the physical contents of the
+tuple data structure (i.e., the references it holds), and does not
+extend to the referenced objects.
+
+t1 is immutable, but t1[-1] is mutable.
+>>> t1 = (1, 2, [30, 40])
+>>> t2 = (1, 2, [30, 40])  # Build a tuple t2 whose items are equal to those of t1.
+>>> t1 == t2  # Although distinct objects, t1 and t2 compare equal, as expected.
+True
+>>> id_before = id(t1[-1])
+>>> t1[-1].append(99)  # Modify the t1[-1] list in place.
+>>> t1
+(1, 2, [30, 40, 99])
+>>> id(t1[-1]) == id_before  # The identity of t1[-1] has not changed, only its value.
+True
+>>> t1 == t2  # t1 and t2 are now different.
+False
+
+This relative immutability of tuples is the reason why some tuples are unhashable.
