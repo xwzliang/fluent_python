@@ -1,0 +1,25 @@
+Lewis Carroll is the pen name of Prof. Charles Lutwidge
+Dodgson. Mr. Carroll is not only equal to Prof. Dodgson: they are one
+and the same.
+
+>>> charles = {'name': 'Charles L. Dodgson', 'born': 1832}
+>>> lewis = charles  # lewis is an alias for charles
+>>> lewis is charles  # The is operator and the id function confirm it.
+True
+>>> id(charles) == id(lewis)
+True
+>>> lewis['balance'] = 950  # Adding an item to lewis is the same as adding an item to charles
+>>> charles
+{'name': 'Charles L. Dodgson', 'born': 1832, 'balance': 950}
+
+
+However, suppose an impostor—let's call him Dr. Alexander
+Pedachenko—claims he is Charles L. Dodgson, born in 1832. His
+credentials may be the same, but Dr. Pedachenko is not Prof. Dodgson.
+
+alex refers to an object that is a replica of the object assigned to charles.
+>>> alex = {'name': 'Charles L. Dodgson', 'born': 1832, 'balance': 950}
+>>> alex == charles  # The objects compare equal, because of the __eq__ implementation in the dict class.
+True
+>>> alex is not charles  # But they are distinct objects. This is the Pythonic way of writing the negative identity comparison: a is not b.
+True
